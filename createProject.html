@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Project</title>
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/plugins/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins/slick.min.css" />
+    <style>
+      body {
+        background-color: #181a31;
+      }
+      .containerForm {
+        background-color: aliceblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-5 containerForm rounded p-3">
+      <h2 class="text-center">Create Project</h2>
+      <form
+        class="needs-validation"
+        enctype="multipart/form-data"
+        id="projectForm"
+        method="POST"
+        action="formApi.php"
+      >
+        <div class="form-group">
+          <input
+            type="text"
+            name="project_name"
+            id="projectName"
+            class="form-control mb-3"
+            placeholder="Project Name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            name="project_category"
+            id="projectCategory"
+            class="form-control mb-3"
+            placeholder="Project Category..."
+            required
+          />
+        </div>
+        <div class="form-group">
+          <textarea
+            name="description"
+            id="description"
+            cols="10"
+            rows="5"
+            class="form-control mb-3"
+            placeholder="Description..."
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <input
+            name="image"
+            type="file"
+            id="projectImage"
+            class="form-control mb-3"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            name="client"
+            type="text"
+            id="projectClient"
+            class="form-control mb-3"
+            placeholder="Project Client..."
+          />
+        </div>
+        <div class="form-group">
+          <input
+            name="tech"
+            type="text"
+            id="projectTech"
+            class="form-control mb-3"
+            placeholder="Project Tech..."
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            name="type"
+            type="text"
+            id="projectType"
+            class="form-control mb-3"
+            placeholder="Project Type..."
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            name="github_URL"
+            type="text"
+            id="projectUrl"
+            class="form-control mb-3"
+            placeholder="Project URL..."
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("projectForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Collect form data
+          const formData = new FormData();
+          formData.append("action", "project_create"); // Add the action here
+          formData.append(
+            "project_name",
+            document.getElementById("projectName").value
+          );
+          formData.append(
+            "project_category",
+            document.getElementById("projectCategory").value
+          );
+          formData.append(
+            "description",
+            document.getElementById("description").value
+          );
+          formData.append(
+            "image",
+            document.getElementById("projectImage").files[0]
+          );
+          formData.append(
+            "client",
+            document.getElementById("projectClient").value
+          );
+          formData.append("tech", document.getElementById("projectTech").value);
+          formData.append("type", document.getElementById("projectType").value);
+          formData.append(
+            "github_URL",
+            document.getElementById("projectUrl").value
+          );
+          // const formData = {
+          //   action: "project_create",
+          //   project_name: document.getElementById("projectName").value,
+          //   project_category: document.getElementById("projectCategory").value,
+          //   description: document.getElementById("description").value,
+          //   image: document.getElementById("projectImage").files[0],
+          //   client: document.getElementById("projectClient").value,
+          //   tech: document.getElementById("projectTech").value,
+          //   type: document.getElementById("projectType").value,
+          //   github_URL: document.getElementById("projectUrl").value,
+          // };
+
+          console.log(document.getElementById("projectImage").files[0]);
+
+          // Send form data to server
+          fetch("http://localhost/portfolio_project/api.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error("Error saving project:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
